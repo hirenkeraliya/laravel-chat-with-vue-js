@@ -11,5 +11,13 @@ class Message extends Model
      *
      * @var array
      */
-    protected $fillable = ['message', 'user_id',];
+    protected $fillable = ['text', 'user_id',];
+
+    /**
+     * Get the user that have the message.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

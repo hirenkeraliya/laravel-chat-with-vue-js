@@ -21,35 +21,30 @@ const app = new Vue({
     el: '#application-container',
     data: {
         isLoggedIn: 0,
+        loggedInUserId: 0,
         login: {
             email: '',
             password: '',
         },
         users: [],
+        messages: [],
+        newMessage: '',
     },
     methods: {
         loginForm: function (form) {
             axios.post('/login', this.login)
             .then(function (response) {
                 if (response.data.type == 'success') {
-                    app.setUsers(response.data.data);
+                    app.setUsers(response.data.users);
+                    app.setMessageHistory(response.data.messages);
 
                     app.isLoggedIn = true;
+                    app.loggedInUserId = response.data.user_id;
                     return;
                 }
 
                 app.isLoggedIn = 0;
             });
-        },
-        showValidationErrors(errors, errorContainer = 'error-container') {
-            var errorsHtml = '';
-
-            $.each(errors, function (key, value) {
-                errorsHtml += '<li>' + value + '</li>';
-            });
-
-            $('#' + errorContainer + ' ul').html(errorsHtml);
-            $('#' + errorContainer).removeClass('d-none');
         },
         setUsers(users) {
             users = JSON.parse(users);
@@ -63,13 +58,33 @@ const app = new Vue({
                 });
             });
         },
+        setMessageHistory(messages) {
+            messages = JSON.parse(messages);
+
+            $.each(messages, function (key, message) {
+                var date = new Date(message.created_at);
+                var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+                app.messages.push({
+                    'id': message.id,
+                    'text': message.text,
+                    'userId': message.user_id,
+                    'userName': message.user.name,
+                    'userImage': '/images/' + message.user_id + '.png',
+                    'time': date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }),
+                    'date': monthNames[date.getMonth()] + date.getDate(),
+                });
+            });
+        },
     },
     created: function () {
         axios.get('/check-user-logged-in')
         .then(function (response) {
             if (response.data.type == 'success') {
-                app.setUsers(response.data.data);
+                app.setUsers(response.data.users);
+                app.setMessageHistory(response.data.messages);
                 app.isLoggedIn = true;
+                app.loggedInUserId = response.data.user_id;
                 return;
             }
 

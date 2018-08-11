@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Message;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -29,12 +30,15 @@ class HomeController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-        if (Auth::attempt($validatedData)) {
+        if ($user = Auth::attempt($validatedData)) {
             $users = User::all();
+            $messages = Message::with('user:id,name')->get();
 
             return [
                 'type' => 'success',
-                'data' => $users->toJson(),
+                'users' => $users->toJson(),
+                'messages' => $messages->toJson(),
+                'user_id' => $user->id,
             ];
         }
 
@@ -53,10 +57,13 @@ class HomeController extends Controller
     {
         if (Auth::check()) {
             $users = User::all();
+            $messages = Message::with('user:id,name')->get();
 
             return [
                 'type' => 'success',
-                'data' => $users->toJson(),
+                'users' => $users->toJson(),
+                'messages' => $messages->toJson(),
+                'user_id' => Auth::user()->id,
             ];
         }
         return [

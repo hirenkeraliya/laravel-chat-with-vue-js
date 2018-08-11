@@ -46,36 +46,47 @@
 
                             <div class="mesgs">
                                 <div class="msg_history">
-                                    <div class="incoming_msg">
-                                        <div class="incoming_msg_img">
-                                            <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-                                        </div>
-
-                                        <div class="received_msg">
-                                            <div class="received_withd_msg">
+                                    <div v-for="message of messages">
+                                        <div class="outgoing_msg" v-if="loggedInUserId == message.userId">
+                                            <div class="sent_msg">
                                                 <p>
-                                                    Test which is a new approach to have all solutions
+                                                    @{{ message.text }}
                                                 </p>
 
                                                 <span class="time_date"> 11:01 AM | June 9</span>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="outgoing_msg">
-                                        <div class="sent_msg">
-                                            <p>
-                                                Test which is a new approach to have all solutions
-                                            </p>
+                                        <div class="incoming_msg" v-else>
+                                            <div class="incoming_msg_img">
+                                                <img v-bind:src="message.userImage" alt="User Avatar">
+                                            </div>
 
-                                            <span class="time_date"> 11:01 AM | June 9</span>
+                                            <div class="received_msg">
+                                                <div class="received_withd_msg">
+                                                    <p>
+                                                        @{{ message.text }}
+                                                    </p>
+
+                                                    <span class="time_date">
+                                                        @{{ message.time }} AM |
+                                                        @{{ message.date }} |
+                                                        @{{ message.userName }}
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="type_msg">
                                     <div class="input_msg_write">
-                                        <input type="text" class="write_msg" placeholder="Type a message">
+                                        <input type="text"
+                                            class="write_msg"
+                                            placeholder="Type a message"
+                                            v-model="newMessage"
+                                            v-on:keyup.enter="sendMessage()"
+                                        >
 
                                         <button class="msg_send_btn" type="button">
                                             <i class="fa fa-paper-plane-o" aria-hidden="true"></i>

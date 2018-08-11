@@ -13913,36 +13913,29 @@ var app = new Vue({
     el: '#application-container',
     data: {
         isLoggedIn: 0,
+        loggedInUserId: 0,
         login: {
             email: '',
             password: ''
         },
-        users: []
+        users: [],
+        messages: [],
+        newMessage: ''
     },
     methods: {
         loginForm: function loginForm(form) {
             __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/login', this.login).then(function (response) {
                 if (response.data.type == 'success') {
-                    app.setUsers(response.data.data);
+                    app.setUsers(response.data.users);
+                    app.setMessageHistory(response.data.messages);
 
                     app.isLoggedIn = true;
+                    app.loggedInUserId = response.data.user_id;
                     return;
                 }
 
                 app.isLoggedIn = 0;
             });
-        },
-        showValidationErrors: function showValidationErrors(errors) {
-            var errorContainer = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'error-container';
-
-            var errorsHtml = '';
-
-            $.each(errors, function (key, value) {
-                errorsHtml += '<li>' + value + '</li>';
-            });
-
-            $('#' + errorContainer + ' ul').html(errorsHtml);
-            $('#' + errorContainer).removeClass('d-none');
         },
         setUsers: function setUsers(users) {
             users = JSON.parse(users);
@@ -13955,13 +13948,33 @@ var app = new Vue({
                     'image': '/images/' + user.id + '.png'
                 });
             });
+        },
+        setMessageHistory: function setMessageHistory(messages) {
+            messages = JSON.parse(messages);
+
+            $.each(messages, function (key, message) {
+                var date = new Date(message.created_at);
+                var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+                app.messages.push({
+                    'id': message.id,
+                    'text': message.text,
+                    'userId': message.user_id,
+                    'userName': message.user.name,
+                    'userImage': '/images/' + message.user_id + '.png',
+                    'time': date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }),
+                    'date': monthNames[date.getMonth()] + date.getDate()
+                });
+            });
         }
     },
     created: function created() {
         __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('/check-user-logged-in').then(function (response) {
             if (response.data.type == 'success') {
-                app.setUsers(response.data.data);
+                app.setUsers(response.data.users);
+                app.setMessageHistory(response.data.messages);
                 app.isLoggedIn = true;
+                app.loggedInUserId = response.data.user_id;
                 return;
             }
 
