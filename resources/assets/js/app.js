@@ -46,6 +46,13 @@ const app = new Vue({
                 app.isLoggedIn = 0;
             });
         },
+        sendMessage() {
+            axios.post('/send-message', { text: this.newMessage })
+            .then(function (response) {
+                app.setMessageRow(response.data);
+                app.newMessage = '';
+            });
+        },
         setUsers(users) {
             users = JSON.parse(users);
 
@@ -62,18 +69,21 @@ const app = new Vue({
             messages = JSON.parse(messages);
 
             $.each(messages, function (key, message) {
-                var date = new Date(message.created_at);
-                var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                app.setMessageRow(message);
+            });
+        },
+        setMessageRow(message) {
+            var date = new Date(message.created_at);
+            var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-                app.messages.push({
-                    'id': message.id,
-                    'text': message.text,
-                    'userId': message.user_id,
-                    'userName': message.user.name,
-                    'userImage': '/images/' + message.user_id + '.png',
-                    'time': date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }),
-                    'date': monthNames[date.getMonth()] + date.getDate(),
-                });
+            app.messages.push({
+                'id': message.id,
+                'text': message.text,
+                'userId': message.user_id,
+                'userName': message.user.name,
+                'userImage': '/images/' + message.user_id + '.png',
+                'time': date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }),
+                'date': monthNames[date.getMonth()] + date.getDate(),
             });
         },
     },

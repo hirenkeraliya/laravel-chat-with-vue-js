@@ -30,7 +30,7 @@ class HomeController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-        if ($user = Auth::attempt($validatedData)) {
+        if (Auth::attempt($validatedData)) {
             $users = User::all();
             $messages = Message::with('user:id,name')->get();
 
@@ -38,7 +38,7 @@ class HomeController extends Controller
                 'type' => 'success',
                 'users' => $users->toJson(),
                 'messages' => $messages->toJson(),
-                'user_id' => $user->id,
+                'user_id' => Auth::user()->id,
             ];
         }
 
@@ -70,5 +70,21 @@ class HomeController extends Controller
             'type' => 'error',
             'message' => 'User not logged in.',
         ];
+    }
+
+    /**
+     * Store user message
+     *
+     * @return Json
+     **/
+    public function sendMessage()
+    {
+        $validatedData = request()->validate([
+            'text' => 'required|string|max:255',
+        ]);
+
+        $message = Auth::user()->messages()->create($validatedData);
+
+        return $message->load('user:id,name');
     }
 }

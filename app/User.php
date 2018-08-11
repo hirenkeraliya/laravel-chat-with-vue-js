@@ -26,4 +26,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Get the messages of the user.
+     */
+    public function messages()
+    {
+        return $this->hasMany('App\Message');
+    }
 }

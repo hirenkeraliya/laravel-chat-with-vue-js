@@ -88,7 +88,7 @@
                                             v-on:keyup.enter="sendMessage()"
                                         >
 
-                                        <button class="msg_send_btn" type="button">
+                                        <button class="msg_send_btn" type="button" v-on:click="sendMessage()">
                                             <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
                                         </button>
                                     </div>

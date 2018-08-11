@@ -16,3 +16,5 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::post('/login', 'HomeController@login')->name('login');
 
 Route::get('/check-user-logged-in', 'HomeController@checkUserLoggedIn')->name('check_user_logged_in');
+
+Route::post('/send-message', 'HomeController@sendMessage')->name('send_message');
