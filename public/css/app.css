@@ -10506,13 +10506,13 @@ img {
 
 .recent_heading {
   float: left;
-  width: 40%;
+  width: 45%;
 }
 
 .srch_bar {
   display: inline-block;
   text-align: right;
-  width: 60%;
+  width: 55%;
 }
 
 .headind_srch {
@@ -10680,10 +10680,6 @@ img {
   right: 0;
   top: 11px;
   width: 33px;
-}
-
-.messaging {
-  padding: 0 0 50px 0;
 }
 
 .msg_history {
