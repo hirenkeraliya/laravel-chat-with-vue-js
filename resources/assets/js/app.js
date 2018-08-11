@@ -32,6 +32,8 @@ const app = new Vue({
             axios.post('/login', this.login)
             .then(function (response) {
                 if (response.data.type == 'success') {
+                    app.setUsers(response.data.data);
+
                     app.isLoggedIn = true;
                     return;
                 }

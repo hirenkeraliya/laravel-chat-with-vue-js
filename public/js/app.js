@@ -13923,6 +13923,8 @@ var app = new Vue({
         loginForm: function loginForm(form) {
             __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/login', this.login).then(function (response) {
                 if (response.data.type == 'success') {
+                    app.setUsers(response.data.data);
+
                     app.isLoggedIn = true;
                     return;
                 }
