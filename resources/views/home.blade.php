@@ -53,7 +53,7 @@
                                                     @{{ message.text }}
                                                 </p>
 
-                                                <span class="time_date"> 11:01 AM | June 9</span>
+                                                <span class="time_date"> 11:01 | June 9</span>
                                             </div>
                                         </div>
 
