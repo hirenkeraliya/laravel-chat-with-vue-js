@@ -10,6 +10,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import axios from 'axios';
+import Pusher from 'pusher-js';
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -134,4 +135,29 @@ const app = new Vue({
             app.isLoggedIn = 0;
         });
     },
+});
+
+// Enable pusher logging - don't include this in production
+Pusher.logToConsole = true;
+
+var pusher = new Pusher('5d4116bdd244e80ce28f', {
+    cluster: 'ap2',
+    encrypted: true
+});
+
+var channel = pusher.subscribe('my-channel');
+channel.bind('my-event', function (data) {
+    if (app.loggedInUserId == data.userId) {
+        return;
+    }
+
+    app.messages.push({
+        'id': data.id,
+        'text': data.text,
+        'userId': data.userId,
+        'userName': data.userName,
+        'userImage': data.userImage,
+        'time': data.time,
+        'date': data.date,
+    });
 });

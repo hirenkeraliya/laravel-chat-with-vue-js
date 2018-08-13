@@ -85,6 +85,29 @@ class HomeController extends Controller
 
         $message = Auth::user()->messages()->create($validatedData);
 
+        $options = array(
+            'cluster' => 'ap2',
+            'encrypted' => true
+        );
+        $pusher = new \Pusher\Pusher(
+            '5d4116bdd244e80ce28f',
+            'a22ec4ee9ef53aca7c8e',
+            '576362',
+            $options
+        );
+
+        $data = [
+            'id' => $message->id,
+            'text' => $message->text,
+            'userId' => $message->user_id,
+            'userName' => $message->user->name,
+            'userImage' => '/images/' . $message->user_id . '.png',
+            'time' => $message->created_at->format('g:i A'),
+            'date' => $message->created_at->format('F d'),
+        ];
+
+        $pusher->trigger('my-channel', 'my-event', $data);
+
         return $message->load('user:id,name');
     }
 }
