@@ -38,6 +38,13 @@ const app = new Vue({
                     return user.name.toLowerCase().indexOf(app.search.toLowerCase()) >= 0;
                 }
             );
+        },
+        selectedUsersMessages: function() {
+            return this.messages.filter(
+                function(message) {
+                    return messages.userId.toLowerCase().indexOf(1) >= 0;
+                }
+            );
         }
     },
     methods: {
@@ -95,6 +102,9 @@ const app = new Vue({
                 'time': date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }),
                 'date': monthNames[date.getMonth()] + date.getDate(),
             });
+        },
+        showUserchat(event, userId) {
+            event.currentTarget.classList.toggle('active_chat');
         },
     },
     created: function () {

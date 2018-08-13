@@ -30,7 +30,7 @@
                                 </div>
 
                                 <div class="inbox_chat">
-                                    <div class="chat_list pointer" v-for="user of searchedUsers" v-on:click="showUserchat()">
+                                    <div class="chat_list pointer" v-for="user of searchedUsers" v-on:click="showUserchat($event, user.id)">
                                         <div class="chat_people">
                                             <div class="chat_img">
                                                 <img v-bind:src="user.image" alt="User Avatar">
@@ -46,7 +46,7 @@
 
                             <div class="mesgs">
                                 <div class="msg_history">
-                                    <div v-for="message of messages">
+                                    <div v-for="message of selectedUsersMessages">
                                         <div class="outgoing_msg" v-if="loggedInUserId == message.userId">
                                             <div class="sent_msg">
                                                 <p>

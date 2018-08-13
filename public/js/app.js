@@ -13934,6 +13934,11 @@ var app = new Vue({
             return this.users.filter(function (user) {
                 return user.name.toLowerCase().indexOf(app.search.toLowerCase()) >= 0;
             });
+        },
+        selectedUsersMessages: function selectedUsersMessages() {
+            return this.messages.filter(function (message) {
+                return messages.userId.toLowerCase().indexOf(1) >= 0;
+            });
         }
     },
     methods: {
@@ -13989,6 +13994,9 @@ var app = new Vue({
                 'time': date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }),
                 'date': monthNames[date.getMonth()] + date.getDate()
             });
+        },
+        showUserchat: function showUserchat(event, userId) {
+            event.currentTarget.classList.toggle('active_chat');
         }
     },
     created: function created() {
