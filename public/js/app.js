@@ -13927,7 +13927,8 @@ var app = new Vue({
         users: [],
         messages: [],
         newMessage: '',
-        search: ''
+        search: '',
+        selectedUsers: []
     },
     computed: {
         searchedUsers: function searchedUsers() {
@@ -13937,7 +13938,11 @@ var app = new Vue({
         },
         selectedUsersMessages: function selectedUsersMessages() {
             return this.messages.filter(function (message) {
-                return messages.userId.toLowerCase().indexOf(1) >= 0;
+                if (app.selectedUsers.length == 0) {
+                    return true;
+                }
+
+                return app.selectedUsers.indexOf(message.userId) >= 0;
             });
         }
     },
@@ -13997,6 +14002,14 @@ var app = new Vue({
         },
         showUserchat: function showUserchat(event, userId) {
             event.currentTarget.classList.toggle('active_chat');
+
+            if (app.selectedUsers.indexOf(userId) >= 0) {
+                app.selectedUsers.splice(app.selectedUsers.indexOf(userId), 1);
+
+                return;
+            }
+
+            app.selectedUsers.push(userId);
         }
     },
     created: function created() {

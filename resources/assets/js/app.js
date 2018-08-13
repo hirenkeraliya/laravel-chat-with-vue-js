@@ -30,6 +30,7 @@ const app = new Vue({
         messages: [],
         newMessage: '',
         search: '',
+        selectedUsers: [],
     },
     computed: {
         searchedUsers: function() {
@@ -42,7 +43,11 @@ const app = new Vue({
         selectedUsersMessages: function() {
             return this.messages.filter(
                 function(message) {
-                    return messages.userId.toLowerCase().indexOf(1) >= 0;
+                    if (app.selectedUsers.length == 0) {
+                        return true;
+                    }
+
+                    return app.selectedUsers.indexOf(message.userId) >= 0;
                 }
             );
         }
@@ -105,6 +110,14 @@ const app = new Vue({
         },
         showUserchat(event, userId) {
             event.currentTarget.classList.toggle('active_chat');
+
+            if (app.selectedUsers.indexOf(userId) >= 0) {
+                app.selectedUsers.splice(app.selectedUsers.indexOf(userId), 1);
+
+                return;
+            }
+
+            app.selectedUsers.push(userId);
         },
     },
     created: function () {
