@@ -18,7 +18,7 @@
 
                                     <div class="srch_bar">
                                         <div class="stylish-input-group">
-                                            <input type="text" class="search-bar" placeholder="Search">
+                                            <input type="text" class="search-bar" placeholder="Search" v-model="search">
 
                                             <span class="input-group-addon">
                                                 <button type="button">
@@ -30,7 +30,7 @@
                                 </div>
 
                                 <div class="inbox_chat">
-                                    <div class="chat_list" v-for="user of users">
+                                    <div class="chat_list pointer" v-for="user of searchedUsers" v-on:click="showUserchat()">
                                         <div class="chat_people">
                                             <div class="chat_img">
                                                 <img v-bind:src="user.image" alt="User Avatar">

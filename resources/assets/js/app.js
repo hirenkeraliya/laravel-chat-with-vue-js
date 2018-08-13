@@ -29,6 +29,16 @@ const app = new Vue({
         users: [],
         messages: [],
         newMessage: '',
+        search: '',
+    },
+    computed: {
+        searchedUsers: function() {
+            return this.users.filter(
+                function(user) {
+                    return user.name.toLowerCase().indexOf(app.search.toLowerCase()) >= 0;
+                }
+            );
+        }
     },
     methods: {
         loginForm: function (form) {

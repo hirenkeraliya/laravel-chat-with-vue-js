@@ -10687,3 +10687,7 @@ img {
   overflow-y: auto;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
