@@ -20,7 +20,11 @@
         "vue": "^2.5.7"
     },
     "dependencies": {
+        "body-parser": "^1.18.3",
+        "ejs": "^2.6.1",
+        "express": "^4.16.3",
         "laravel-echo": "^1.4.0",
+        "pusher": "^2.1.2",
         "pusher-js": "^4.2.2"
     }
 }

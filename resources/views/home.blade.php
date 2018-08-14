@@ -79,6 +79,10 @@
                                     </div>
                                 </div>
 
+                                <div class="typing-indicator text-muted mt-3 help-block" v-show="typing" style="font-style: italic;">
+                                    @{{ typingUser }} is typing...
+                                </div>
+
                                 <div class="type_msg">
                                     <div class="input_msg_write">
                                         <input type="text"
@@ -86,6 +90,7 @@
                                             placeholder="Type a message"
                                             v-model="newMessage"
                                             v-on:keyup.enter="sendMessage()"
+                                            v-on:keydown="userTyping()"
                                         >
 
                                         <button class="msg_send_btn" type="button" v-on:click="sendMessage()">

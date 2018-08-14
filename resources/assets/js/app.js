@@ -12,6 +12,7 @@ window.Vue = require('vue');
 import axios from 'axios';
 import Pusher from 'pusher-js';
 
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -23,6 +24,7 @@ const app = new Vue({
     data: {
         isLoggedIn: 0,
         loggedInUserId: 0,
+        loggedInUserName: 0,
         login: {
             email: '',
             password: '',
@@ -32,6 +34,8 @@ const app = new Vue({
         newMessage: '',
         search: '',
         selectedUsers: [],
+        typingUser: '',
+        typing: false,
     },
     computed: {
         searchedUsers: function() {
@@ -54,6 +58,11 @@ const app = new Vue({
         }
     },
     methods: {
+        // app.post('/userTyping', function(req, res) {
+        //     const username = req.body.username;
+        //     pusher.trigger(chatChannel, userIsTypingEvent, {username: username});
+        //     res.status(200).send();
+        //   });
         loginForm: function (form) {
             axios.post('/login', this.login)
             .then(function (response) {
@@ -63,6 +72,7 @@ const app = new Vue({
 
                     app.isLoggedIn = true;
                     app.loggedInUserId = response.data.user_id;
+                    app.loggedInUserName = response.data.name;
                     return;
                 }
 
@@ -75,6 +85,13 @@ const app = new Vue({
                 app.setMessageRow(response.data);
                 app.newMessage = '';
             });
+        },
+        userTyping() {
+            // axios.post('/user-typing', { username: this.newMessage })
+            // .then(function (response) {
+            //     app.setMessageRow(response.data);
+            //     app.newMessage = '';
+            // });
         },
         setUsers(users) {
             users = JSON.parse(users);

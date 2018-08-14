@@ -13923,6 +13923,7 @@ var app = new Vue({
     data: {
         isLoggedIn: 0,
         loggedInUserId: 0,
+        loggedInUserName: 0,
         login: {
             email: '',
             password: ''
@@ -13931,7 +13932,9 @@ var app = new Vue({
         messages: [],
         newMessage: '',
         search: '',
-        selectedUsers: []
+        selectedUsers: [],
+        typingUser: '',
+        typing: false
     },
     computed: {
         searchedUsers: function searchedUsers() {
@@ -13950,6 +13953,11 @@ var app = new Vue({
         }
     },
     methods: {
+        // app.post('/userTyping', function(req, res) {
+        //     const username = req.body.username;
+        //     pusher.trigger(chatChannel, userIsTypingEvent, {username: username});
+        //     res.status(200).send();
+        //   });
         loginForm: function loginForm(form) {
             __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/login', this.login).then(function (response) {
                 if (response.data.type == 'success') {
@@ -13958,6 +13966,7 @@ var app = new Vue({
 
                     app.isLoggedIn = true;
                     app.loggedInUserId = response.data.user_id;
+                    app.loggedInUserName = response.data.name;
                     return;
                 }
 
@@ -13969,6 +13978,13 @@ var app = new Vue({
                 app.setMessageRow(response.data);
                 app.newMessage = '';
             });
+        },
+        userTyping: function userTyping() {
+            // axios.post('/user-typing', { username: this.newMessage })
+            // .then(function (response) {
+            //     app.setMessageRow(response.data);
+            //     app.newMessage = '';
+            // });
         },
         setUsers: function setUsers(users) {
             users = JSON.parse(users);
